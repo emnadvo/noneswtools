@@ -1,0 +1,16 @@
+FILE NAME: skeletonVIM_FILE_NAME
+DATETIME CREATED: skeletonVIM_CREATION_DATE
+CREATED BY: skeletonVIM_USER_NAME
+DATETIME UPDATED: 14/07/2009 18:40
+UPDATED BY: e_mnadvo
+STATE: 
+*******************************************************************************************************
+WORK REPORT:
+CODES:
+KEYWORDS:
+DESCRIPTION:
+NOTES:
+*******************************************************************************************************
+MAIN:
+
+---------------------------------

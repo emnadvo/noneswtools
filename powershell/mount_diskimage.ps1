@@ -1,0 +1,1 @@
+﻿Mount-DiskImage -ImagePath "G:\nonehdd_1.vhdx" -StorageType VHDX -WhatIf -Access ReadWrite

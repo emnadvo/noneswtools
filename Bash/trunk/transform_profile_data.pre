@@ -1,0 +1,15 @@
+# Session file started:  2014/06/19 09:36:36
+# CFX-15.0 build 2013.10.10-08.49-130242
+
+COMMAND FILE:
+  CFX Pre Version = 15.0
+END
+
+>transformProfileData,\
+ProfileName=OLDPRFILE,\
+Axis=Global Z,\
+ComponentsInSector=1,\
+ComponentsIn360=CMPTNNUMB,\
+NewProfileDataPath=NEWPRFILE
+
+>update

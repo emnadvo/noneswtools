@@ -1,0 +1,200 @@
+/ $nprof   pocet profilu
+/ $nbodu   pocet bodu tvoricich jeden profil
+/ $nbnab   pocet bodu tvoricich nabeznou hranu
+/ $nbodt   pocet bodu tvoricich odtokovou hranu
+/ $nbpre   pocet bodu tvoricich pretlakovou krivku
+/ $nbpod   pocet bodu tvoricich podtlakovou krivku
+/ $nbodtp  pocet bodu tvoricich polovinu odtokove hrany
+/ $nbnabp  pocet bodu tvoricich polovinu nabezne hrany
+/ $bodt1   cislo bodu na zacatku odtokove hrany
+/ $bodtp   cislo bodu v polovine odtokove hrany
+/ $bodt2   cislo bodu na konci odtokove hrany
+/ $bnab1   cislo bodu na zacatku nabezne hrany
+/ $bnabp   cislo bodu v polovine nabezne hrany
+/ $bnab2   cislo bodu na konci nabezne hrany
+/
+$fnamesig
+/
+/
+/
+/
+/
+$fname1 = $fnamesig + ".dat"
+$fname2 = $fnamesig + ".dbs"
+solver select "FLUENT 5/6"
+import vertexdata $fname1
+$nprof = 1
+$nbodu = 100
+$nbnab = 5
+$nbodt = 7
+$bnabp = 51
+$nbnabp= ($nbnab+1)/2
+$nbodtp= ($nbodt+1)/2
+$nbpod = $bnabp-$nbnabp-$nbodtp+2
+$nbpre = $nbodu-$nbnab-$nbpod-$nbodt+4
+$bodt1 = $nbodu-(($nbodt+1)/2)+2
+$bodtp = 1
+$bodt2 = ($nbodt+1)/2
+$bnab1 = $bnabp-$nbnabp+1
+$bnab2 = $bnabp+$nbnabp-1
+$lvst  = 50
+$lvys  = 10
+$nmintnab = 200
+$nmintpod = 2000
+$nmintodt = 200
+/
+macro start "hledminmax"
+$t0 = 0
+declare $vcord[3]
+$vcord = ENT2LOC("vertex.1")
+$xminc = $vcord[1]
+$xmaxc = $vcord[1]
+DO PARA "$t0" INIT 1 COND ($t0 .le. $nbodu) INCR 1
+   $vname = SDEFAULT("label.vertex.prefix") + NTOS($t0)
+   $vcord = ENT2LOC($vname)
+   IF COND ($vcord[1] .le. $xminc)
+      $xminc = $vcord[1]
+      $xminn = $t0
+      $xminnamehub = SDEFAULT("label.vertex.prefix") + NTOS($nbodu+$t0)
+      $xminnamecas = SDEFAULT("label.vertex.prefix") + NTOS(($nprof-2)*$nbodu+$t0)
+   ENDIF
+   IF COND ($vcord[1] .ge. $xmaxc)
+      $xmaxc = $vcord[1]
+      $xmaxn = $t0
+      $xmaxnamehub = SDEFAULT("label.vertex.prefix") + NTOS($nbodu+$t0)
+      $xmaxnamecas = SDEFAULT("label.vertex.prefix") + NTOS(($nprof-2)*$nbodu+$t0)
+   ENDIF
+ENDDO
+vertex copy $xminnamehub $xminnamecas to "hubinl" "casinl"
+vertex move "hubinl" "casinl" offset $lvst
+vertex copy $xmaxnamehub $xmaxnamecas to "hubout" "casout"
+vertex move "hubout" "casout" offset $lvys
+edge create "hubedge" straight "hubinl" "hubout"
+edge create "casedge" straight "casinl" "casout"
+macro end
+/
+macro start "genprofil"
+$t1 = 0
+$t2 = 0
+declare $gsezpod1[$nbodtp]
+declare $gsezpod2[$nbpod]
+declare $gsezpod3[$nbnabp]
+declare $gsezpre1[$nbodtp]
+declare $gsezpre2[$nbpre]
+declare $gsezpre3[$nbnabp]
+declare $gseznabp[$nprof]
+/
+$tnabp = 1
+DO PARA "$t1" INIT 1 COND ($t1 .le. $nprof) INCR 1
+   $tpod1 = 1
+   $tpod2 = 1
+   $tpod3 = 1
+   $tpre1 = 1
+   $tpre2 = 1
+   $tpre3 = 1
+   DO PARA "$t2" INIT $bodtp COND ($t2 .le. ($nbodu+1)) INCR 1
+      IF COND ($t2 .lt. $bodt2)
+         $vname=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$t2)
+         $gsezpod1[$tpod1]=$vname
+         $tpod1 = $tpod1 + 1
+      ENDIF
+      IF COND ($t2 .eq. $bodt2)
+         $vname=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$t2)
+         $gsezpod1[$tpod1]=$vname
+         $gsezpod2[$tpod2]=$vname
+         $tpod2 = $tpod2 + 1
+      ENDIF
+      IF COND (($t2 .gt. $bodt2) .AND. ($t2 .lt. $bnab1))
+         $vname=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$t2)
+         $gsezpod2[$tpod2]=$vname
+         $tpod2 = $tpod2 + 1
+      ENDIF
+      IF COND ($t2 .eq. $bnab1)
+         $vname=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$t2)
+         $gsezpod2[$tpod2]=$vname
+         $gsezpod3[$tpod3]=$vname
+         $tpod3 = $tpod3 + 1
+      ENDIF
+      IF COND (($t2 .gt. $bnab1) .AND. ($t2 .lt. $bnabp))
+         $vname=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$t2)
+         $gsezpod3[$tpod3]=$vname
+         $tpod3 = $tpod3 + 1
+      ENDIF
+      IF COND ($t2 .eq. $bnabp)
+         $vname=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$t2)
+         $gsezpod3[$tpod3]=$vname
+         $gsezpre3[$tpre3]=$vname
+         $tpre3 = $tpre3 + 1
+         $gseznabp[$tnabp]=$vname
+         $tnabp = $tnabp + 1
+      ENDIF
+      IF COND (($t2 .gt. $bnabp) .AND. ($t2 .lt. $bnab2)) 
+         $vname=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$t2) 
+         $gsezpre3[$tpre3]=$vname 
+         $tpre3 = $tpre3 + 1 
+      ENDIF 
+      IF COND ($t2 .eq. $bnab2) 
+         $vname=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$t2) 
+         $gsezpre3[$tpre3]=$vname 
+         $gsezpre2[$tpre2]=$vname 
+         $tpre2 = $tpre2 + 1 
+      ENDIF 
+      IF COND (($t2 .gt. $bnab2) .AND. ($t2 .lt. $bodt1)) 
+         $vname=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$t2) 
+         $gsezpre2[$tpre2]=$vname 
+         $tpre2 = $tpre2 + 1 
+      ENDIF 
+      IF COND ($t2 .eq. ($bodt1)) 
+         $vname=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$t2) 
+         $gsezpre2[$tpre2]=$vname 
+         $gsezpre1[$tpre1]=$vname 
+         $tpre1 = $tpre1 + 1 
+      ENDIF 
+      IF COND (($t2 .gt. ($bodt1)) .AND. ($t2 .le. ($nbodu))) 
+         $vname=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$t2) 
+         $gsezpre1[$tpre1]=$vname 
+         $tpre1 = $tpre1 + 1 
+      ENDIF 
+      IF COND ($t2 .eq. ($nbodu+1)) 
+         $vname=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-2)+$t2) 
+         $gsezpre1[$tpre1]=$vname 
+      ENDIF 
+   ENDDO
+$ename1="podtlak_" + NTOS($t1) + "_1" 
+$ename2="podtlak_" + NTOS($t1) + "_2" 
+$ename3="podtlak_" + NTOS($t1) + "_3" 
+$ename4="pretlak_" + NTOS($t1) + "_1" 
+$ename5="pretlak_" + NTOS($t1) + "_2" 
+$ename6="pretlak_" + NTOS($t1) + "_3" 
+$vname1=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$bodtp)
+$vname2=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$bodtp+1)
+$vname3=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$bodt2)
+edge create $ename1 arc threepoints $vname1 $vname2 $vname3
+/edge create $ename1 nurbs $gsezpod1 interpolate 
+edge create $ename2 nurbs $gsezpod2 interpolate 
+$vname1=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$bnab1)
+$vname2=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$bnabp-1)
+$vname3=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$bnabp)
+edge create $ename3 arc threepoints $vname1 $vname2 $vname3
+/edge create $ename3 nurbs $gsezpod3 interpolate 
+$vname1=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$bodt1)
+$vname2=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$bodt1+1)
+$vname3=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$bodtp)
+edge create $ename4 arc threepoints $vname1 $vname2 $vname3
+/edge create $ename4 nurbs $gsezpre1 interpolate 
+edge create $ename5 nurbs $gsezpre2 interpolate 
+$vname1=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$bnabp)
+$vname2=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$bnab2-1)
+$vname3=SDEFAULT("label.vertex.prefix") + NTOS($nbodu*($t1-1)+$bnab2)
+edge create $ename6 arc threepoints $vname1 $vname2 $vname3
+/edge create $ename6 nurbs $gsezpre3 interpolate 
+edge mesh $ename1 $ename4 intervals $nmintodt 
+edge mesh $ename2 $ename5 intervals $nmintpod 
+edge mesh $ename3 $ename6 intervals $nmintnab 
+edge msummarize $ename1 $ename2 $ename3 $ename6 $ename5 $ename4 meshnodes 
+ENDDO 
+macro end 
+/macrorun name "hledminmax" 
+macrorun name "genprofil" 
+save name $fname2 
+end force

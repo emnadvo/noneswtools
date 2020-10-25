@@ -1,0 +1,108 @@
+function retVal = FCENAME( varargin )
+# usage: DESCR
+# 
+## Copyright (C) 2011 USER
+## 
+## This program is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+## 
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+## 
+## You should have received a copy of the GNU General Public License
+## along with Octave; see the file COPYING.  If not, see
+## <http://www.gnu.org/licenses/>.
+
+## FILENAME
+
+## Author: USER <USER@DOMAIN>
+## Created: DATE
+
+## Description: DESCR
+########################################################################
+## CONSTANTS
+FAILED = -1;
+ERROR = -3;
+SUCESSED = 0;
+FLOAT_TYPE = "%3.6f ";
+DEC_TYPE = "%d";
+STR_TYPE = "%s ";
+LOAD_TYPE = '-ascii';
+SAVE_TYPE = '-ascii';
+ISEMPTY = 1;
+ENDLINE= "\n";
+# IDs for config file
+SOURCE_FILE_ID = 1;
+
+# Property for globally report about executing this script
+REPORT = '';
+
+## TMPL_STRINGS
+SCR_NAME = 'FCENAME';
+CURR_PATH = pwd;
+EMPTY_INPUT = "Unresolved filename!\n";
+STR_W_ENDLN = "%s\n";
+MSG_ERR_CATCH = "When execute script it was catched exception!\n%s\n";
+MSG_FAIL_OPEN = "System don\'t open your file with name %s\n";
+INSERT_DATA = "Vlozte nazev zdrojoveho souboru se souradnicemi\n(nenachazi-li se v pracovnim adresari vlozte i s cestou!)\n";
+
+##-----------------------------------------------------------
+# Kdyz chcete pouzivat parametry, zde se nainicializuje list pro pripad volani bez parametru.
+	  if(length(varargin) == 0)
+			 varargin{SOURCE_FILE_ID} = "";
+	  endif
+
+	  try
+			 if( isempty(varargin{SOURCE_FILE_ID})!=ISEMPTY )
+
+			 endif
+	  catch
+			 printf(MSG_ERR_CATCH,lasterror.message);
+	  end_try_catch
+
+endfunction
+
+##-----------------------------------------------------------
+## FUNCTIONS
+
+## Show your message in output
+function ShowStdOut ( message )
+     STR_W_ENDLN = "%s\n";
+	  printf(STR_W_ENDLN, message);
+endfunction
+
+## Try open file with input filename
+function [retval,file] = FileExist(filename)
+   FAILED = -1;
+	if(isempty(filename) != 1)
+	  [SRC,MSG] = fopen(filename,'r');
+	else
+	  SRC = FAILED;
+	endif
+
+	#ERROR pri otevreni souboru
+	if(SRC == FAILED)
+	  retval = false;
+	  file = "";
+   else
+	  retval = true;
+	  file = SRC;
+	endif
+endfunction
+
+## Append message to output
+function retval = AddToReport(msg, output)
+	  ISEMPTY = 1;
+	  retval = '';
+	  if isempty(msg) != ISEMPTY
+			 if isempty(output) != ISEMPTY
+					retval = strcat(output, msg);
+			 else
+					retval = msg;
+			 endif
+	  endif
+endfunction

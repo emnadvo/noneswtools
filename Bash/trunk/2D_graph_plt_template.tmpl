@@ -1,0 +1,51 @@
+# template file for plot style for gnuplot
+# created 15/09/2011
+# version 1.0.1
+# created by mnadvornik
+
+# odstrani okraj grafu
+unset border 
+set border 3 lw 1.5
+#set border 4095 lw 5
+
+#nastavi style pouzity pro vykresleni dat napr. ze souboru - body spojene primkou, bez vyhlazeni
+#set style data linespoints
+#set autoscale xfix
+
+#nastavi velikost znacek
+set tics scale 1.6, 0.8
+
+# nastaveni zobrazeni vedlejsich znacek
+set mxtics 5; set mytics 5
+
+# nastaveni zobrazeni site vedlejsich a hlavnich znacek a stylu mrizky
+set grid xtics ytics mxtics mytics lt 1 lc rgb "blue" lw 0.7, lt 0.5 lc rgb "blue" lw 0.5
+
+# zmeni format hodnot na ose x
+#set format x "%2.1f"
+# zmeni format hodnot na ose y
+#set format y "%1.6f"
+
+#set xtics xmin,deltaX,xmax #nastavi pocet hlavnich dilku dle deltax do xmax z xmin
+#set ytics ymin,deltaY,ymax  #nastavi pocet hlavnich dilku dle deltay do ymax z ymin
+
+# nastaveni jmena osy x
+#set xlabel "Jmeno"
+# nastaveni jmena osy y
+#set ylabel "jmeno"
+# nastaveni jmena grafu
+#set title "Jmeno grafu"
+
+#nastaveni vystupu do obrazku jpeg
+#set terminal jpeg large font arial size 1280,1024
+#set output "jmeno_grafu.jpeg"
+
+#nastaveni legendy stred
+#set key bottom
+#set term png enhanced font VeraSe 20 size 1600, 1010
+set xtics nomirror
+set ytics nomirror
+
+# nastaveni pro aktivaci nahrazovaciho retezce
+set macros
+
