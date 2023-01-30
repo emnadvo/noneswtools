@@ -1,0 +1,7 @@
+{
+  "type": "module",
+  "dependencies": {
+    "arangojs": "^8.1.0"
+    
+  }
+}
