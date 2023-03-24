@@ -11,7 +11,7 @@
                 FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. AFD � Studio 2010
 '''
 
-class CAppException(Exception):
+class AppException(Exception):
     '''
     Class for special define exception for applications    
     '''

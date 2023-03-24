@@ -8,7 +8,7 @@
     @version: 1.0.1
     @contact: nadvornm@gmail.com
     @copyright: NO WARRANTY  BECAUSE THE PROGRAM IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY
-                         FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. NOne © Tech 2009
+                         FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. NOne ï¿½ Tech 2009
 '''
 
 import os
@@ -52,7 +52,7 @@ class CLogManager(object):
         '''
         self.var = _logmanager_variables_()
         
-        flmanag = file_service.CFileService(True)
+        flmanag = file_service.FileService(True)
         global msgFormat
         msgFormat = "{0}|{1} |{2}\n"
         logHeader = "Start skript"
@@ -106,7 +106,7 @@ class CLogManager(object):
         
 #         if fileExist:
 #             ArchiveFile = ArchiveFile.format(CntOldArch)
-#             ziptool = archive_service.CArchService()
+#             ziptool = archive_service.ArchService()
 #             ziptool.ArchiveFile(path + OldItem, path+ArchiveFile)
     
         self.logName = now.strftime('%d%m%Y') + self.logName

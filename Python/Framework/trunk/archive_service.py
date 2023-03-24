@@ -65,7 +65,7 @@ class arch_variable(object):
     
 
 
-class CArchService:
+class ArchService:
     '''
     Archive service tool provided base support for archiving files into tar or gzip format
     '''
@@ -164,7 +164,6 @@ class CArchService:
             arch_parser.print_help()
             return False
 
-
     def __init__(self, internal = False):       
         '''
         Constructor
@@ -246,8 +245,7 @@ class CArchService:
             service.ShowStderr(const.EXCEPT_MSG_UNKNOWN.format('CompressFile'))
         else:
             return False   
-
-                
+               
     def Extract(self, archive, destination=None):
         '''
         @note: Extract archive to destination
@@ -386,5 +384,5 @@ class CArchService:
         
         
 if __name__ == '__main__':
-    mservice = CArchService()
+    mservice = ArchService()
     sys.exit()

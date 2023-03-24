@@ -51,7 +51,7 @@ class messages:
 
 class fls_variables:
     '''
-    @note: variables for class CFileService
+    @note: variables for class FileService
     ''' 
     def __init__(self):
         self.path = None
@@ -78,7 +78,7 @@ class fls_variables:
         self.no_path = None
         
 
-class CFileService:
+class FileService:
 #============CLASS METHOD============    
     '''
     @note: Service for file operation
@@ -545,7 +545,7 @@ class CFileService:
 #__main__ section
 #==========================================================================
 if __name__ == '__main__':
-    msr = CFileService()
+    msr = FileService()
 #===========================================================================
 # print 'Proces start {0} {1}\n'.format(datetime.datetime.today().strftime('%d.%m.%Y'), datetime.datetime.now().strftime('%H:%M:%S'))
 # print 'Proces end {0} {1}\n'.format(datetime.datetime.today().strftime('%d.%m.%Y'), datetime.datetime.now().strftime('%H:%M:%S'))
