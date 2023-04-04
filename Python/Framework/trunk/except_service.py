@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!'C:\app\Python37\python.exe'
 #-*- coding: UTF-8 -*-
 '''
     Created on 12.05.2011

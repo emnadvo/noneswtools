@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!'C:\app\Python37\python.exe'
 #-*- coding: UTF-8 -*-
 '''
  Created on 06.01.2012 12:14:52
@@ -31,7 +31,7 @@ except ex.ImportError, ie:
     raise ex.SystemExit
 
 
-class _CProcess_Info_(object):
+class _Process_Info_(object):
     '''
     class for summary information about running process
     '''

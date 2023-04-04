@@ -1,4 +1,4 @@
-#!C:\NOne\Python26  #upravit dle uzivatelskeho nastaveni
+#!'C:\app\Python37\python.exe'  #upravit dle uzivatelskeho nastaveni
 #-*- coding: cp1250 -*-
 
 '''     Created on 14.1.2010
@@ -30,7 +30,7 @@ START_HEAD = "Start skript"
 
 class _logmanager_variables_(object):
     '''
-    Class for save variables for master class CLogManager
+    Class for save variables for master class LogManager
     '''    
     def __init__(self):
         self.out_stream = None
@@ -41,7 +41,7 @@ class _logmanager_variables_(object):
         self.logfile_set = False
          
 
-class CLogManager(object):
+class LogManager(object):
     '''
     classdocs
     '''
@@ -233,7 +233,7 @@ class CLogManager(object):
 
 #Test section
 if __name__ == '__main__':
-    logMgr = CLogManager()
+    logMgr = LogManager()
     #----------------------------------- logMgr.WriteError("Dnes to nefunguje!")
     #------------------------------------ logMgr.WriteInfo("Dnes to nefunguje!")
     #--------------------------------- logMgr.WriteWarning("Dnes to nefunguje!")

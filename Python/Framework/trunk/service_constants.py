@@ -1,4 +1,4 @@
-#!'C:\Documents and Settings\vign54\Dokumenty\Python27\python.exe'
+#!'C:\app\Python37\python.exe'
 #-*- coding: UTF-8 -*-
 
 '''
