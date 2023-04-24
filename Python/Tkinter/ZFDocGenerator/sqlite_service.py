@@ -20,3 +20,12 @@ class DbManager:
             print("Database connection closed")
         else:
             print("No database connection found")
+
+    def execute(self, query):
+        if self.conn:
+            try:
+                self.conn.cursor.execute(query)
+                self.conn.commit()
+                print("Executed query ok")
+            except sqdb.Error as e:
+                print(f"Error executing at database: {e}")

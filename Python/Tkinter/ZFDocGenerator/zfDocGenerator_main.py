@@ -1,6 +1,7 @@
 # import modules
 import tkinter as tk
 import zfDocGeneratorApp_CONST as APPCONST
+import zfDocGeneratorApp_SQL as SQLPARAMS
 import sqlite_service as dbservice
 
 
@@ -12,7 +13,7 @@ class ZFDocGeneratorApp(object):
             self.master.geometry(APPCONST.GEOMETRY_RESOLUTION)
 
     def __connect_db__(self) -> None:
-        self.db_source = dbservice.DbManager()
+        self.db_source = dbservice.DbManager(SQLPARAMS.DBNAME, SQLPARAMS.DBUSERNAME, SQLPARAMS.DBPASSWORD)
 
 
 # function territory

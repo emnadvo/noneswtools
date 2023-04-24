@@ -1,0 +1,12 @@
+#!'C:\app\Python37\python.exe'
+#-*- coding: UTF-8 -*-
+
+VERSION = '1.0.0'
+
+TITLE = 'ZF CR Service tool'
+GEOMETRY_RESOLUTION = '450x100'
+BUTTON_WIDTH=8
+BUTTON_HEIGHT=BUTTON_WIDTH+5
+COMBO_HEIGHT=50
+CLEARCASE_VIEW = 'view'
+CCUSERID = '0054383'
